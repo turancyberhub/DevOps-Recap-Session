@@ -13,8 +13,8 @@ terraform {
 }
 
 resource "aws_instance" "apache" {
-  ami           = "ami-02396cdd13e9a1257"
-  instance_type = "t2.nano"
+  ami           = var.instance_ami_id["us-east-1"]
+  instance_type = var.instance_type[0]
   tags = {
     "Name"    = "terraform_instance"
     "Purpose" = "learning_tf"
@@ -22,12 +22,45 @@ resource "aws_instance" "apache" {
   }
 }
 
+variable "instance_ami_id" {
+  type = map
+  # default = {
+  #   # Identifier       =     Value
+  #   "us-east-1"          = "ami-0889a44b331db0194"
+  #   "us-east-2"          = "ami-08333bccc35d71140"
+  #   "us-west-1"          = "ami-051ed863837a0b1b6"
+  #   "us-west-2"          = "ami-04e914639d0cca79a"
+  # }
+}
+
+# First Name                                 Last Name
+# Dilshod                                     Saidmurodova
+# Coskun                                      Avazov
+# Vakhob                                      Karabiyik
+# Dinara                                      Aripov
+
+variable "instance_type" {
+  type = list
+  #default = ["t2.micro", "t2.nano", "t2.large", "t2.medium"]
+#positionNo    [0]          [1]         [2]         [3]  ...
+}
+
 resource "aws_instance" "manual" {
-  ami           = "ami-02396cdd13e9a1257"
-  instance_type = "t2.micro"
+  #count = 3
+  ami           = var.instance_ami_id["us-east-1"]
+  instance_type = var.instance_type[2]
   subnet_id = aws_subnet.subnet_1.id
   tags = {
     "Name"    = "manual_instance"
+  }
+}
+
+resource "aws_instance" "manual1" {
+  ami           = var.instance_ami_id["us-east-1"]
+  instance_type = var.instance_type[1]
+  subnet_id = aws_subnet.subnet_1.id
+  tags = {
+    "Name"    = "manual_instance1"
   }
 }
 
